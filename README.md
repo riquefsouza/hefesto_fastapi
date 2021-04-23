@@ -3,12 +3,16 @@ conda install -c conda-forge fastapi
 conda install -c conda-forge uvicorn
 uvicorn --version
 
-python3 -m venv fastapi-env
-source fastapi-env/bin/activate
+python3 -m venv venv
+. venv/bin/activate
+pip install -U pip setuptools
+
 ou
+
 deactivate
-pip3 install fastapi				 --> opcional
-pip3 install uvicorn 				 --> opcional
+
+pip install fastapi
+pip install uvicorn
 
 uvicorn main:app --reload
 
@@ -16,7 +20,7 @@ git init
 
 touch .gitignore
 __pycache__
-fastapi-env
+venv
 .DS_Store
 
 git add .
@@ -25,4 +29,7 @@ git commit -m "hefesto-fastapi"
 
 /* SWAGGER */
 http://localhost:8000/docs
+
+/* REDOC */
+http://localhost:8000/redoc
 
