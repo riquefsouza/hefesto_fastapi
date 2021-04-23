@@ -13,6 +13,7 @@ deactivate
 
 pip install fastapi
 pip install uvicorn
+pip install jinja2
 
 uvicorn main:app --reload
 
@@ -33,3 +34,10 @@ http://localhost:8000/docs
 /* REDOC */
 http://localhost:8000/redoc
 
+pip install fastapi uvicorn SQLAlchemy psycopg2-binary alembic
+
+pip freeze > requirements.txt
+
+alembic init alembic
+alembic revision -m "init"
+alembic upgrade head
