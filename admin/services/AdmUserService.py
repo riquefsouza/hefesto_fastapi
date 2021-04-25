@@ -48,7 +48,7 @@ class AdmUserService:
                 db.commit()
                 return True
             else:
-                return False    
+                return False
         except Exception as e:
             print(e)
             db.rollback()

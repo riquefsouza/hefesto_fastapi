@@ -1,5 +1,6 @@
 from admin.models.AdmUser import AdmUser
 import json
+from typing import List
 
 class AdmUserDTO:
     id: int
@@ -20,3 +21,10 @@ class AdmUserDTO:
     def to_json(self):
         return json.dumps(self.__dict__)
     
+    @staticmethod
+    def list_to_json(lista: List[AdmUser]):
+        listaDTO = []
+        for item in lista:
+            dto = AdmUserDTO(item)
+            listaDTO.append(dto.__dict__)
+        return json.dumps(listaDTO)

@@ -12,3 +12,9 @@ class AdmUser(Base):
     login = Column('usu_login', String(64), nullable=False)
     name = Column('usu_name', String(64))
     password = Column('usu_password', String(128), nullable=False)
+
+    #def __init__(self, login):
+    #    self.login = login
+    
+    def __repr__(self):
+        return '<AdmUser %r>' % self.name

@@ -19,8 +19,13 @@ def listAll(db: Session = Depends(get_db)):
     return service.findAll(db)
 
 @router.get(URL + '/{id}', status_code=status.HTTP_200_OK)
-def findById(id: int, db: Session = Depends(get_db)):
-    return service.findById(db, id)
+def findById(id: int, response: Response, db: Session = Depends(get_db)):
+    admUser = service.findById(db, id)
+    if admUser!=None:
+        return admUser
+    else:
+        response.status_code = status.HTTP_404_NOT_FOUND
+        return ""
 
 @router.post(URL, status_code=status.HTTP_201_CREATED)
 def save(form: AdmUserForm, response: Response, db: Session = Depends(get_db)):
