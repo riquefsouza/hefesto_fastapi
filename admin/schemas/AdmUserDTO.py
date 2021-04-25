@@ -15,7 +15,7 @@ class AdmUserDTO:
         self.email=admUser.email
         self.login=admUser.login
         self.name=admUser.name
-        self.password=admUser.assword
+        self.password=admUser.password
 
     def to_json(self):
         return json.dumps(self.__dict__)

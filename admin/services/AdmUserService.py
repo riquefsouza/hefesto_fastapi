@@ -17,31 +17,38 @@ class AdmUserService:
 
     def save(self, db: Session, form: AdmUserForm):
         try:
-            newAdmUser = form.to_AdmUser()
-            db.add(newAdmUser)
-            db.commit()
-            return newAdmUser
-        except Exception as e:
-            print(e)
-            db.rollback()
-            return Null
-
-    def update(self, db: Session, id: int, form: AdmUserForm):
-        try:
-            admUser: AdmUser = db.query(AdmUser).get(id)
-            admUser = form.from_AdmUser(admUser)
+            admUser = form.to_AdmUser()
+            db.add(admUser)
             db.commit()
             return admUser
         except Exception as e:
             print(e)
             db.rollback()
-            return Null
+            return None
+
+    def update(self, db: Session, id: int, form: AdmUserForm):
+        try:
+            admUser: AdmUser = db.query(AdmUser).get(id)
+            if admUser != None:
+                admUser = form.from_AdmUser(admUser)
+                db.commit()
+                return admUser
+            else:
+                return None
+        except Exception as e:
+            print(e)
+            db.rollback()
+            return None
 
     def delete(self, db: Session, id: int):
         try:
-            db.query(AdmUser).filter(AdmUser.id == id).delete()
-            db.commit()
-            return True
+            query = db.query(AdmUser).filter_by(id=id)
+            if query.count() > 0:
+                db.query(AdmUser).filter(AdmUser.id == id).delete()
+                db.commit()
+                return True
+            else:
+                return False    
         except Exception as e:
             print(e)
             db.rollback()

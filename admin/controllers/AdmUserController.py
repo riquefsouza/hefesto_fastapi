@@ -1,5 +1,5 @@
 import fastapi
-from fastapi import Depends
+from fastapi import Depends, status, Response
 from sqlalchemy.orm import Session
 from base.database import get_db
 from admin.models.AdmUser import AdmUser
@@ -14,28 +14,40 @@ service = AdmUserService()
 
 URL = '/api/v1/admUser'
 
-@router.get(URL)
-def findAll(db: Session = Depends(get_db)):
+@router.get(URL, status_code=status.HTTP_200_OK)
+def listAll(db: Session = Depends(get_db)):
     return service.findAll(db)
 
-@router.get(URL + '/{id}')
+@router.get(URL + '/{id}', status_code=status.HTTP_200_OK)
 def findById(id: int, db: Session = Depends(get_db)):
     return service.findById(db, id)
 
-@router.post(URL)
-def save(form: AdmUserForm, db: Session = Depends(get_db)):
-    newAdmUser = service.save(db, form)
-    return {
-        "admUser_id": newAdmUser.id
-    }
+@router.post(URL, status_code=status.HTTP_201_CREATED)
+def save(form: AdmUserForm, response: Response, db: Session = Depends(get_db)):
+    admUser = service.save(db, form)
+    if admUser!=None:
+        dto = AdmUserDTO(admUser)
+        return dto.to_json()
+    else:
+        response.status_code = status.HTTP_404_NOT_FOUND
+        return ""
 
-@router.put(URL + '/{id}')
-def save(id: int, form: AdmUserForm, db: Session = Depends(get_db)):
+@router.put(URL + '/{id}', status_code=status.HTTP_200_OK)
+def update(id: int, form: AdmUserForm, response: Response, db: Session = Depends(get_db)):
     admUser = service.update(db, id, form)
-    dto = AdmUserDTO(admUser)
-    return dto.to_json()
+    if admUser!=None:
+        dto = AdmUserDTO(admUser)
+        return dto.to_json()
+    else:
+        response.status_code = status.HTTP_404_NOT_FOUND
+        return ""
 
-@router.delete(URL)
-def delete(id: int, db: Session = Depends(get_db)):
+@router.delete(URL, status_code=status.HTTP_200_OK)
+def delete(id: int, response: Response, db: Session = Depends(get_db)):
     bOk: bool = service.delete(db, id)
-    return {"success": bOk}
+    if bOk:
+        response.status_code = status.HTTP_200_OK
+        return ""
+    else:
+        response.status_code = status.HTTP_404_NOT_FOUND
+        return ""
