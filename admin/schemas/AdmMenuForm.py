@@ -1,5 +1,5 @@
 from pydantic import BaseModel, Field
-from admin.models.AdmUser import AdmUser
+from admin.models.AdmMenu import AdmMenu
 
 
 class AdmMenuForm(BaseModel):
@@ -12,9 +12,9 @@ class AdmMenuForm(BaseModel):
 
     def to_AdmMenu(self):
         newAdmMenu = AdmMenu(
-            description=self.description
-            idMenuParent=self.idMenuParent
-            idPage=self.idPage
+            description=self.description,
+            idMenuParent=self.idMenuParent,
+            idPage=self.idPage,
             order=self.order
         )
         return newAdmMenu

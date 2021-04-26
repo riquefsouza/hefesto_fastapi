@@ -8,7 +8,7 @@ class AdmPageForm(BaseModel):
 
     def to_AdmPage(self):
         newAdmPage = AdmPage(
-            description=self.description
+            description=self.description,
             url=self.url
         )
         return newAdmPage

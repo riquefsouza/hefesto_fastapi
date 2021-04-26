@@ -2,15 +2,15 @@ from pydantic import BaseModel, Field
 from admin.models.AdmProfile import AdmProfile
 
 
-class AdmProfile(BaseModel):
+class AdmProfileForm(BaseModel):
     administrator: str
     description: str
     general: str
 
     def to_AdmProfile(self):
         newAdmProfile = AdmProfile(
-            administrator=self.administrator
-            description=self.description
+            administrator=self.administrator,
+            description=self.description,
             general=self.general
         )
         return newAdmProfile

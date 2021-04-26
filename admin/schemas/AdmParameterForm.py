@@ -11,9 +11,9 @@ class AdmParameterForm(BaseModel):
 
     def to_AdmParameter(self):
         newAdmParameter = AdmParameter(
-            code=self.code
-            description=self.description
-            idParameterCategory=self.idParameterCategory
+            code=self.code,
+            description=self.description,
+            idParameterCategory=self.idParameterCategory,
             value=self.value
             #admParameterCategory=self.admParameterCategory
         )

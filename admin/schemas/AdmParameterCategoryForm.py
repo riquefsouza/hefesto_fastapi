@@ -8,7 +8,7 @@ class AdmParameterCategoryForm(BaseModel):
 
     def to_AdmParameterCategory(self):
         newAdmParameterCategory = AdmParameterCategory(
-            description=self.description
+            description=self.description,
             order=self.order
         )
         return newAdmParameterCategory
