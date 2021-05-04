@@ -14,6 +14,7 @@ deactivate
 pip install fastapi
 pip install uvicorn
 pip install jinja2
+pip install bcrypt
 
 uvicorn main:app --reload
 

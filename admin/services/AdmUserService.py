@@ -4,8 +4,12 @@ from base.database import get_db
 from admin.models.AdmUser import AdmUser
 from admin.schemas.AdmUserDTO import AdmUserDTO
 from admin.schemas.AdmUserForm import AdmUserForm
+#import bcrypt
+from passlib.context import CryptContext
 
 class AdmUserService:
+    bcrypt = CryptContext(schemes=["bcrypt"], deprecated="auto")
+
     def __init__(self):
         pass
 
@@ -53,3 +57,21 @@ class AdmUserService:
             print(e)
             db.rollback()
             return False
+
+    def authenticate(self, db: Session, login: str, password: str):
+        admUser = db.query(AdmUser).filter(AdmUser.login == login).first()
+
+        if admUser != None:
+            if self.verifyPassword(password, admUser.password):
+                return admUser
+
+        return None
+
+    def verifyPassword(self, password: str, hashPassword: str):
+        #return bcrypt.checkpw(password, hashPassword)
+        return self.bcrypt.verify(password, hashPassword)
+
+    def register(self, model: AdmUser):
+        #hash = bcrypt.hashpw(model.password.encode('utf8'), bcrypt.gensalt(10))
+        hash = self.bcrypt.hash(model.password.encode('utf8'))
+        model.password = hash

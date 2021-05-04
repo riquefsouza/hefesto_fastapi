@@ -7,19 +7,23 @@ from admin.schemas.AdmProfileDTO import AdmProfileDTO
 from admin.schemas.AdmProfileForm import AdmProfileForm
 from admin.services.AdmProfileService import AdmProfileService
 from typing import List
+from base.services.AuthHandlerService import AuthHandlerService
+from base.schemas.UserDTO import UserDTO
 
 router = fastapi.APIRouter()
-
+authHandler = AuthHandlerService()
 service = AdmProfileService()
 
 URL = '/api/v1/admProfile'
 
 @router.get(URL, status_code=status.HTTP_200_OK)
-def listAll(db: Session = Depends(get_db)):
+def listAll(user: UserDTO = Depends(authHandler.auth_wrapper), 
+    db: Session = Depends(get_db)):
     return service.findAll(db)
 
 @router.get(URL + '/{id}', status_code=status.HTTP_200_OK)
-def findById(id: int, response: Response, db: Session = Depends(get_db)):
+def findById(id: int, response: Response, 
+    user: UserDTO = Depends(authHandler.auth_wrapper), db: Session = Depends(get_db)):
     admProfile = service.findById(db, id)
     if admProfile!=None:
         return admProfile
@@ -28,7 +32,8 @@ def findById(id: int, response: Response, db: Session = Depends(get_db)):
         return ""
 
 @router.post(URL, status_code=status.HTTP_201_CREATED)
-def save(form: AdmProfileForm, response: Response, db: Session = Depends(get_db)):
+def save(form: AdmProfileForm, response: Response, 
+    user: UserDTO = Depends(authHandler.auth_wrapper), db: Session = Depends(get_db)):
     admProfile = service.save(db, form)
     if admProfile!=None:
         dto = AdmProfileDTO(admProfile)
@@ -38,7 +43,8 @@ def save(form: AdmProfileForm, response: Response, db: Session = Depends(get_db)
         return ""
 
 @router.put(URL + '/{id}', status_code=status.HTTP_200_OK)
-def update(id: int, form: AdmProfileForm, response: Response, db: Session = Depends(get_db)):
+def update(id: int, form: AdmProfileForm, response: Response, 
+    user: UserDTO = Depends(authHandler.auth_wrapper), db: Session = Depends(get_db)):
     admProfile = service.update(db, id, form)
     if admProfile!=None:
         dto = AdmProfileDTO(admProfile)
@@ -48,7 +54,8 @@ def update(id: int, form: AdmProfileForm, response: Response, db: Session = Depe
         return ""
 
 @router.delete(URL, status_code=status.HTTP_200_OK)
-def delete(id: int, response: Response, db: Session = Depends(get_db)):
+def delete(id: int, response: Response, 
+    user: UserDTO = Depends(authHandler.auth_wrapper), db: Session = Depends(get_db)):
     bOk: bool = service.delete(db, id)
     if bOk:
         response.status_code = status.HTTP_200_OK
