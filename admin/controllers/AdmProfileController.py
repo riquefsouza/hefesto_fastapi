@@ -63,3 +63,26 @@ def delete(id: int, response: Response,
     else:
         response.status_code = status.HTTP_404_NOT_FOUND
         return ""
+
+@router.get(URL + '/{pageId}', status_code=status.HTTP_200_OK)
+def findProfilesByPage(pageId: int, response: Response, 
+    user: UserDTO = Depends(authHandler.auth_wrapper), db: Session = Depends(get_db)):
+    listAdmProfile = service.findProfilesByPage(db, pageId)
+    if listAdmProfile!=None:
+        return listAdmProfile
+    else:
+        response.status_code = status.HTTP_404_NOT_FOUND
+        return ""
+
+@router.get(URL + '/{userId}', status_code=status.HTTP_200_OK)
+def findProfilesByUser(userId: int, response: Response, 
+    user: UserDTO = Depends(authHandler.auth_wrapper), db: Session = Depends(get_db)):
+    listAdmProfile = service.findProfilesByUser(db, userId)
+    if listAdmProfile!=None:
+        return listAdmProfile
+    else:
+        response.status_code = status.HTTP_404_NOT_FOUND
+        return ""
+
+
+

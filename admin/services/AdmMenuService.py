@@ -53,3 +53,7 @@ class AdmMenuService:
             print(e)
             db.rollback()
             return False
+    
+    def mountMenuItem(self, db: Session, listIdProfile: List[int]):
+        pass
+

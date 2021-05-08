@@ -63,3 +63,9 @@ def delete(id: int, response: Response,
     else:
         response.status_code = status.HTTP_404_NOT_FOUND
         return ""
+
+@router.get(URL + '/mountMenu', status_code=status.HTTP_200_OK)
+def mountMenu(listIdProfile: List[int], response: Response, 
+    user: UserDTO = Depends(authHandler.auth_wrapper), db: Session = Depends(get_db)):
+    menuItemDTO = service.mountMenuItem(db, listIdProfile)
+    return menuItemDTO.to_json()

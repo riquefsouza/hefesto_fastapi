@@ -53,3 +53,10 @@ class AdmProfileService:
             print(e)
             db.rollback()
             return False
+    
+    def findProfilesByPage(self, db: Session, pageId: int):
+        pass
+
+    def findProfilesByUser(self, db: Session, userId: int):
+        pass
+
