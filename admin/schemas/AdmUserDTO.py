@@ -9,6 +9,11 @@ class AdmUserDTO:
     login: str
     name: str
     password: str
+    admIdProfiles: List[int]
+    userProfiles: str
+    currentPassword: str
+    newPassword: str
+    confirmNewPassword: str
 
     def __init__(self, admUser: AdmUser):
         self.id = admUser.id

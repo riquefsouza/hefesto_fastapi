@@ -4,6 +4,7 @@ from base.database import get_db
 from admin.models.AdmMenu import AdmMenu
 from admin.schemas.AdmMenuDTO import AdmMenuDTO
 from admin.schemas.AdmMenuForm import AdmMenuForm
+from typing import List
 
 class AdmMenuService:
     def __init__(self):
@@ -54,6 +55,32 @@ class AdmMenuService:
             db.rollback()
             return False
     
+    def setTransientWithoutSubMenus(self, plist: List[AdmMenu]):
+        for item in plist:
+            self.setTransientSubMenus(item, None);
+
+    def setTransient(self, db: Session, plist: List[AdmMenu]):
+        for item in plist:
+            self.setTransient(db, item)
+
+    def setTransientSubMenus(self, item: AdmMenu, subMenus: List[AdmMenu]):
+        if item.admPage != None:
+            item.url = item.admPage.url
+        else:
+            item.url = None
+        item.subMenus = subMenus
+    
+    def setTransient(self, db: Session, item: AdmMenu):
+        self.setTransientSubMenus(item, self.findByIdMenuParent(db, item.id))
+
+    def findByIdMenuParent(self, db: Session, idMenuParent: int):
+        if idMenuParent != None:
+            lista = db.query(AdmMenu).filter(AdmMenu.idMenuParent == idMenuParent)
+            #self.setTransientWithoutSubMenus(lista)
+            return lista
+        
+        return []
+
     def mountMenuItem(self, db: Session, listIdProfile: List[int]):
         pass
 

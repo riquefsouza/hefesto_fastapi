@@ -26,6 +26,8 @@ def findById(id: int, response: Response,
     user: UserDTO = Depends(authHandler.auth_wrapper), db: Session = Depends(get_db)):
     admPage = service.findById(db, id)
     if admPage!=None:
+        #dto = AdmPageDTO(admPage)
+        #return dto.to_json()
         return admPage
     else:
         response.status_code = status.HTTP_404_NOT_FOUND
@@ -36,8 +38,9 @@ def save(form: AdmPageForm, response: Response,
     user: UserDTO = Depends(authHandler.auth_wrapper), db: Session = Depends(get_db)):
     admPage = service.save(db, form)
     if admPage!=None:
-        dto = AdmPageDTO(admPage)
-        return dto.to_json()
+        #dto = AdmPageDTO(admPage)
+        #return dto.to_json()
+        return admPage
     else:
         response.status_code = status.HTTP_404_NOT_FOUND
         return ""
@@ -47,8 +50,9 @@ def update(id: int, form: AdmPageForm, response: Response,
     user: UserDTO = Depends(authHandler.auth_wrapper), db: Session = Depends(get_db)):
     admPage = service.update(db, id, form)
     if admPage!=None:
-        dto = AdmPageDTO(admPage)
-        return dto.to_json()
+        #dto = AdmPageDTO(admPage)
+        #return dto.to_json()
+        return admPage
     else:
         response.status_code = status.HTTP_404_NOT_FOUND
         return ""

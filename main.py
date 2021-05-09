@@ -9,8 +9,8 @@ from base.controllers import LoginController
 app = fastapi.FastAPI()
 
 def configure():
-    app.include_router(home.router)
-    app.include_router(wheather_api.router)
+    #app.include_router(home.router)
+    #app.include_router(wheather_api.router)
     app.include_router(LoginController.router)
     app.include_router(AdmMenuController.router)
     app.include_router(AdmPageController.router)

@@ -8,8 +8,8 @@ class AdmPageProfile(Base):
     __tablename__ = 'adm_page_profile'
 
     id = Column('pgl_seq', BigInteger, Sequence('adm_page_profile_seq'), primary_key=True)
-    idProfile = Column('pgl_prf_seq', BigInteger, nullable=False, ForeignKey('adm_profile.prf_seq'))
-    idPage = Column('pgl_pag_seq', BigInteger, nullable=False, ForeignKey('adm_page.pag_seq'))
+    idProfile = Column('pgl_prf_seq', BigInteger, ForeignKey('adm_profile.prf_seq'), nullable=False)
+    idPage = Column('pgl_pag_seq', BigInteger, ForeignKey('adm_page.pag_seq'), nullable=False)
     admProfile = relationship('AdmProfile', foreign_keys=idProfile)
     admPage = relationship('AdmPage', foreign_keys=idPage)
 

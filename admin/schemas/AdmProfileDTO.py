@@ -1,4 +1,6 @@
 from admin.models.AdmProfile import AdmProfile
+from admin.models.AdmPage import AdmPage
+from admin.models.AdmUser import AdmUser
 import json
 from typing import List
 
@@ -9,6 +11,10 @@ class AdmProfileDTO:
     administrator: str
     description: str
     general: str
+    admPages: List[AdmPage]
+    admUsers: List[AdmUser]
+    profilePages: str
+    profileUsers: str
 
     def __init__(self, admProfile: AdmProfile):
         self.id = admProfile.id

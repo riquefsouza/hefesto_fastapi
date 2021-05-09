@@ -1,7 +1,7 @@
 from sqlalchemy import CHAR, Integer, String, BigInteger, Sequence
 from sqlalchemy.sql.schema import Column
 from base.database import Base
-
+from typing import List
 
 class AdmPage(Base):
     __tablename__ = 'adm_page'
