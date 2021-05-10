@@ -2,6 +2,7 @@ from fastapi import Depends
 from sqlalchemy.orm import Session
 from base.database import get_db
 from admin.models.AdmMenu import AdmMenu
+from admin.models.AdmPage import AdmPage
 from admin.schemas.AdmMenuDTO import AdmMenuDTO
 from admin.schemas.AdmMenuForm import AdmMenuForm
 from base.schemas.MenuItemDTO import MenuItemDTO
@@ -129,7 +130,7 @@ class AdmMenuService:
             inner join adm_page_profile pgl on prf.prf_seq=pgl.pgl_prf_seq 
             inner join adm_page pag on pgl.pgl_pag_seq=pag.pag_seq 
             inner join adm_menu mnu on pag.pag_seq=mnu.mnu_pag_seq 
-            where prf.prf_seq in ({self.toStrList(listIdProfile)}) and mnu.mnu_seq > 9 and mnu.mnu_parent_seq={idAdmMenu}
+            where prf.prf_seq in ({self.toStrList(listIdProfile)}) and mnu.mnu_seq > 9 and mnu.mnu_parent_seq={admMenu.id}
             order by mnu.mnu_seq, mnu.mnu_order'''
 
         sql = f"select * from find_menu_by_id_profiles('{{{self.toStrList(listIdProfile)}}}',{admMenu.id})"
@@ -142,7 +143,7 @@ class AdmMenuService:
             inner join adm_page_profile pgl on prf.prf_seq=pgl.pgl_prf_seq 
             inner join adm_page pag on pgl.pgl_pag_seq=pag.pag_seq 
             inner join adm_menu mnu on pag.pag_seq=mnu.mnu_pag_seq 
-            where prf.prf_seq in ({self.toStrList(listIdProfile)}) and mnu.mnu_seq <= 9 and mnu.mnu_parent_seq={idAdmMenu}
+            where prf.prf_seq in ({self.toStrList(listIdProfile)}) and mnu.mnu_seq <= 9 and mnu.mnu_parent_seq={admMenu.id}
             order by mnu.mnu_seq, mnu.mnu_order'''
         
         sql = f"select * from find_Admin_Menu_By_Id_Profiles('{{{self.toStrList(listIdProfile)}}}',{admMenu.id})"            
