@@ -22,6 +22,11 @@ class AdmUserDTO:
         self.login=admUser.login
         self.name=admUser.name
         self.password=admUser.password
+        self.admIdProfiles = []
+        self.userProfiles = ""
+        self.currentPassword = ""
+        self.newPassword = ""
+        self.confirmNewPassword = ""
 
     def to_json(self):
         return json.dumps(self.__dict__)

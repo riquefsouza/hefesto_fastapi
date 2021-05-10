@@ -1,9 +1,8 @@
 from admin.models.AdmProfile import AdmProfile
-from admin.models.AdmPage import AdmPage
-from admin.models.AdmUser import AdmUser
+from admin.schemas.AdmPageDTO import AdmPageDTO
+from admin.schemas.AdmUserDTO import AdmUserDTO
 import json
 from typing import List
-
 
 
 class AdmProfileDTO:
@@ -11,8 +10,8 @@ class AdmProfileDTO:
     administrator: str
     description: str
     general: str
-    admPages: List[AdmPage]
-    admUsers: List[AdmUser]
+    admPages: List[AdmPageDTO]
+    admUsers: List[AdmUserDTO]
     profilePages: str
     profileUsers: str
 
@@ -21,6 +20,10 @@ class AdmProfileDTO:
         self.administrator = admProfile.administrator
         self.description = admProfile.description
         self.general = admProfile.general
+        self.admPages = []
+        self.admUsers = []
+        self.profilePages = ''
+        self.profileUsers = ''
 
     def to_json(self):
         return json.dumps(self.__dict__)

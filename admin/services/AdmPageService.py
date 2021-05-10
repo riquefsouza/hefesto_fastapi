@@ -66,7 +66,6 @@ class AdmPageService:
         for item in plist:
             dto = self.setTransient(db, item)
             listaDTO.append(dto)
-        #return json.dumps(listaDTO)
         return listaDTO
 
     def setTransient(self, db: Session, item: AdmPage):

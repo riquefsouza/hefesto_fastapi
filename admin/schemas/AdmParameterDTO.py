@@ -1,5 +1,5 @@
 from admin.models.AdmParameter import AdmParameter
-from admin.models.AdmParameterCategory import AdmParameterCategory
+from admin.schemas.AdmParameterCategoryDTO import AdmParameterCategoryDTO
 import json
 from typing import List
 
@@ -10,7 +10,7 @@ class AdmParameterDTO:
     description: str
     idParameterCategory: int
     value: str
-    admParameterCategory: AdmParameterCategory
+    admParameterCategory: AdmParameterCategoryDTO
 
     def __init__(self, admParameter: AdmParameter):
         self.id = admParameter.id
@@ -18,6 +18,7 @@ class AdmParameterDTO:
         self.description = admParameter.description
         self.idParameterCategory = admParameter.idParameterCategory
         self.value = admParameter.value
+        #self.admParameterCategory = AdmParameterCategoryDTO()
 
     def to_json(self):
         return json.dumps(self.__dict__)

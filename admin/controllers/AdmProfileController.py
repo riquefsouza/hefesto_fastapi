@@ -36,8 +36,9 @@ def save(form: AdmProfileForm, response: Response,
     user: UserDTO = Depends(authHandler.auth_wrapper), db: Session = Depends(get_db)):
     admProfile = service.save(db, form)
     if admProfile!=None:
-        dto = AdmProfileDTO(admProfile)
-        return dto.to_json()
+        #dto = AdmProfileDTO(admProfile)
+        #return dto.to_json()
+        return admProfile
     else:
         response.status_code = status.HTTP_404_NOT_FOUND
         return ""
@@ -47,8 +48,9 @@ def update(id: int, form: AdmProfileForm, response: Response,
     user: UserDTO = Depends(authHandler.auth_wrapper), db: Session = Depends(get_db)):
     admProfile = service.update(db, id, form)
     if admProfile!=None:
-        dto = AdmProfileDTO(admProfile)
-        return dto.to_json()
+        #dto = AdmProfileDTO(admProfile)
+        #return dto.to_json()
+        return admProfile
     else:
         response.status_code = status.HTTP_404_NOT_FOUND
         return ""

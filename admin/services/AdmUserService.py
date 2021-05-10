@@ -4,27 +4,33 @@ from base.database import get_db
 from admin.models.AdmUser import AdmUser
 from admin.schemas.AdmUserDTO import AdmUserDTO
 from admin.schemas.AdmUserForm import AdmUserForm
+from admin.services.AdmUserProfileService import AdmUserProfileService
+from typing import List
+import json
 #import bcrypt
 from passlib.context import CryptContext
 
 class AdmUserService:
+    userProfileService = AdmUserProfileService()
     bcrypt = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
     def __init__(self):
         pass
 
     def findAll(self, db: Session):
-        return db.query(AdmUser).all()
+        plist = db.query(AdmUser).all()
+        return self.setTransientList(db, plist)
 
     def findById(self, db: Session, id: int):
-        return db.query(AdmUser).filter(AdmUser.id == id).first()
+        obj = db.query(AdmUser).filter(AdmUser.id == id).first()
+        return self.setTransient(db, obj)
 
     def save(self, db: Session, form: AdmUserForm):
         try:
             admUser = form.to_AdmUser()
             db.add(admUser)
             db.commit()
-            return admUser
+            return self.setTransient(db, admUser)
         except Exception as e:
             print(e)
             db.rollback()
@@ -36,7 +42,7 @@ class AdmUserService:
             if admUser != None:
                 admUser = form.from_AdmUser(admUser)
                 db.commit()
-                return admUser
+                return self.setTransient(db, admUser)
             else:
                 return None
         except Exception as e:
@@ -57,6 +63,26 @@ class AdmUserService:
             print(e)
             db.rollback()
             return False
+
+    def setTransientList(self, db: Session, plist: List[AdmUser]):
+        listaDTO = []
+        for item in plist:
+            dto = self.setTransient(db, item)
+            listaDTO.append(dto)
+        return listaDTO
+
+    def setTransient(self, db: Session, item: AdmUser):
+        dto = AdmUserDTO(item)
+        obj = self.userProfileService.getProfilesByUser(db, item.id)
+        for profile in obj:
+            dto.admIdProfiles.append(profile.id)
+
+        listUserProfiles = []
+        for profile in obj:
+            listUserProfiles.append(profile.description)
+        dto.userProfiles = ",".join(listUserProfiles)
+        
+        return dto.__dict__
 
     def authenticate(self, db: Session, login: str, password: str):
         admUser = db.query(AdmUser).filter(AdmUser.login == login).first()

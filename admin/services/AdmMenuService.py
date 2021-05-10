@@ -56,30 +56,57 @@ class AdmMenuService:
             return False
     
     def setTransientWithoutSubMenus(self, plist: List[AdmMenu]):
+        listaDTO = []
         for item in plist:
-            self.setTransientSubMenus(item, None);
+            dto = self.setTransientSubMenus(item, None)
+            listaDTO.append(dto)
+        return listaDTO
 
-    def setTransient(self, db: Session, plist: List[AdmMenu]):
+    def setTransientList(self, plist: List[AdmMenu]):
+        listaDTO = []
         for item in plist:
-            self.setTransient(db, item)
+            dto = self.setTransient(item)
+            listaDTO.append(dto)
+        return listaDTO
 
-    def setTransientSubMenus(self, item: AdmMenu, subMenus: List[AdmMenu]):
+    def setTransientSubMenus(self, item: AdmMenu, subMenus: List[AdmMenuDTO]):
+        dto = AdmMenuDTO(item)
         if item.admPage != None:
-            item.url = item.admPage.url
+            dto.url = item.admPage.url
         else:
-            item.url = None
-        item.subMenus = subMenus
+            dto.url = None
+        dto.subMenus = subMenus
+
+        return dto.__dict__
     
     def setTransient(self, db: Session, item: AdmMenu):
-        self.setTransientSubMenus(item, self.findByIdMenuParent(db, item.id))
+        listaMenus = self.findByIdMenuParent(db, item.id)
+        listaDTO = []
+        for menu in listaMenus:
+            menuDTO = AdmMenuDTO(menu)
+            listaDTO.append(menuDTO.__dict__)
+
+        return self.setTransientSubMenus(item, listaDTO)
 
     def findByIdMenuParent(self, db: Session, idMenuParent: int):
         if idMenuParent != None:
-            lista = db.query(AdmMenu).filter(AdmMenu.idMenuParent == idMenuParent)
+            lista = db.query(AdmMenu).filter_by(idMenuParent = idMenuParent).all()
             #self.setTransientWithoutSubMenus(lista)
             return lista
         
         return []
+
+    def findMenuByIdProfiles(self, db: Session, listaIdProfile: List[int], admMenu: AdmMenu):
+        pass
+
+    def findAdminMenuByIdProfiles(self, db: Session, listaIdProfile: List[int], admMenu: AdmMenu):
+        pass
+
+    def findMenuParentByIdProfiles(self, db: Session, listaIdProfile: List[int]):
+        pass
+    
+    def findAdminMenuParentByIdProfiles(self, db: Session, listaIdProfile: List[int]):
+        pass
 
     def mountMenuItem(self, db: Session, listIdProfile: List[int]):
         pass

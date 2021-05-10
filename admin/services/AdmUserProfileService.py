@@ -25,9 +25,9 @@ class AdmUserProfileService:
 
     def getProfilesByUser(self, db: Session, admUserId: int):
         listAdmUserProfile = db.query(AdmUserProfile).filter(AdmUserProfile.idUser == admUserId)
-        lista: List[AdmProfile]
+        lista = []
 
-        for item in lista:
+        for item in listAdmUserProfile:
             #self.setTransient(item)
             lista.append(item.admProfile)
 
@@ -35,9 +35,9 @@ class AdmUserProfileService:
 
     def getUsersByProfile(self, db: Session, admProfileId: int):
         listAdmUserProfile = db.query(AdmUserProfile).filter(AdmUserProfile.idProfile == admProfileId)
-        lista: List[AdmUser]
+        lista = []
 
-        for item in lista:
+        for item in listAdmUserProfile:
             #self.setTransient(item)
             lista.append(item.admUser)
 
