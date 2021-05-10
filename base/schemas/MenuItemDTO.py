@@ -7,20 +7,9 @@ class MenuItemDTO:
     routerLink: str
     url: str
     to: str
-    item: List[MenuItemDTO];
+    item: []
 
-    def __init__(self):
-        self.item = []
-        self.clean()
-
-    def __init__(self, label: str, url: str) {
-        super().__init__()
-        self.label = label
-        self.url = url
-        self.routerLink = url
-        self.to = url
-
-    def __init__(self, label: str, url: str, item: List[MenuItemDTO]):
+    def __init__(self, label: str, url: str, item):
         super().__init__()
         self.label = label
         self.url = url

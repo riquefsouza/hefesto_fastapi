@@ -17,15 +17,16 @@ class AdmMenuDTO:
     subMenus = []
 
     def __init__(self, admMenu: AdmMenu):
-        self.id = admMenu.id
-        self.description = admMenu.description
-        self.idMenuParent = admMenu.idMenuParent
-        self.idPage = admMenu.idPage
-        self.order = admMenu.order
-        #self.admMenuParent = AdmMenuDTO(admMenu.admMenuParent)
-        #self.admPage = AdmPageDTO(admMenu.admPage)
-        self.url = ""
-        self.subMenus = []        
+        if admMenu!=None:
+            self.id = admMenu.id
+            self.description = admMenu.description
+            self.idMenuParent = admMenu.idMenuParent
+            self.idPage = admMenu.idPage
+            self.order = admMenu.order
+            #self.admMenuParent = AdmMenuDTO(admMenu.admMenuParent)
+            #self.admPage = AdmPageDTO(admMenu.admPage)
+            self.url = ""
+            self.subMenus = []
 
     def to_json(self):
         return json.dumps(self.__dict__)
